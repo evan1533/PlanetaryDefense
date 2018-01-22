@@ -1,0 +1,7 @@
+#starting currency
+#enemy waves
+#enemy difficulty
+
+Map-MapOne.txt
+
+EnemySetupOne.txt

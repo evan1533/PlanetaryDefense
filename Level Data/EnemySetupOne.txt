@@ -1,0 +1,3 @@
+#Format [Enemy Type] (Enemy level) (number of units) (time of deployment)
+
+Scout 1 20 100

@@ -1,0 +1,7 @@
+#starting currency
+#enemy waves
+#enemy difficulty
+
+Map-MapTwo.txt
+
+Scouts-100
