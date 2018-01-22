@@ -7,7 +7,7 @@ extends Unit
     public Kamiko(int level, int px, int py, int[][] nodGraph, int pEnd, boolean friend)
     {
         //            HP   Armor
-        super(level , 40  , 0,   px, py, 2, nodGraph, pEnd, friend, 21,35, 8);
+        super(level , 8  , 0,   px, py, 2, nodGraph, pEnd, friend, 21,35, 8);
     }
 
     public void tickX(int pDx)

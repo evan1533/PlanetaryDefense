@@ -31,8 +31,8 @@ implements MouseListener, Runnable
 		window = new CustomWindow(750,1000,this);
 		window.center();
 
-		map.setComponentBase(12,2, Color.red);
-		map.setComponentBase(2,12, Color.blue);
+		map.setComponentBase(12,2, false);
+		map.setComponentBase(2,12, true);
 		th = new Thread(this);
 		th.start();
 		loadLevel("LevelOne.txt");
@@ -82,6 +82,10 @@ implements MouseListener, Runnable
 					if(line[0].equals("Map"))
 					{
 						map.loadMapFile(line[1]);
+					}
+					else if(line[0].equals("Setup"))
+					{
+						c.coordinateTroops(line[1]);
 					}
 				}
 			br.close();

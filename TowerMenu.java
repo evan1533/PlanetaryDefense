@@ -246,6 +246,10 @@ public class TowerMenu
 				{
 					g.drawImage(TankFactory.getImage(),x,y,42,42,null);
 				}
+				if(subclass=='K')
+				{
+					g.drawImage(KamikoFactory.getImage(),x,y,42,42,null);
+				}
 			}
 			if(towerType=='W')
 			{

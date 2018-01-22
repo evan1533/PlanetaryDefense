@@ -145,8 +145,10 @@ public class Controller
 
 		if(typ1 == 'F')
 		{
-		    Factory tempFactory = (Factory)t;
+			Factory tempFactory = (Factory)(t);
+			tempFactory.setUnitArray(myUnits);
 			factories.add(tempFactory);
+			//System.out.println("ASSHAT");
 		}
 		if(typ1 == 'W')
 		{

@@ -42,7 +42,7 @@ public class KamikoFactory extends Factory
             g.setColor(Color.red);
         }
         g.fillOval(x,y,42,42);
-        g.setColor(Color.ORANGE);
+        g.setColor(Color.MAGENTA);
         g.fillOval(x+10,y+10,21,21);
         g.setColor(c);
     }
