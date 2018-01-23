@@ -24,8 +24,9 @@ public abstract class Unit
 	int offsetX, offsetY;
 	int baseDamage;
 	int height;
+	char ID;
 
-	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int dmg)
+	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int dmg, char id)
 	{
 		HP = pHP;
 		armor = pArmor;
@@ -45,9 +46,10 @@ public abstract class Unit
 		offsetX = (int)(Math.random()*width);
 		offsetY = (int)(Math.random()*height);
 		baseDamage = dmg;
+		this.ID = id;
 	}
 
-	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int height, int dmg)
+	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int height, int dmg,char id)
 	{
 		HP = pHP;
 		armor = pArmor;
@@ -67,6 +69,7 @@ public abstract class Unit
 		this.width = width;
 		this.height = height;
 		baseDamage = dmg;
+		this.ID = id;
 	}
 
 	public int getBaseDmg()

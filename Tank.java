@@ -7,7 +7,7 @@ extends Unit
 	public Tank(int level, int px, int py, int[][] nodGraph, int pEnd, boolean friend)
 	{
 		//            HP   Armor
-		super(level , 80  ,30.0,   px, py, .5, nodGraph, pEnd, friend, 21,35, 8);
+		super(level , 80  ,30.0,   px, py, .5, nodGraph, pEnd, friend, 21,35,8,'T');
 	}
 
 	public void tickX(int pDx)

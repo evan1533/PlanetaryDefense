@@ -279,6 +279,7 @@ public class Controller
 
 	public void scanForUnits()
 	{
+	    //Friendly tower targeting enemy units
 		for(int u = 0;u<enemies.size();u++)
 		{
 			Unit tempEnemy = enemies.get(u);
@@ -288,7 +289,8 @@ public class Controller
 				(weapons.get(i)).updateEnemies(enemies);
 			}
 		}
-
+		
+		//Enemy tower targeting friendly units
 		for(int u = 0;u<activeUnits.size();u++)
 		{
 			Unit tempEnemy = activeUnits.get(u);
@@ -297,7 +299,8 @@ public class Controller
 				(enemyWeapons.get(i)).scan(tempEnemy);
 			}
 		}
-
+		
+		
 		for(int u = 0;u<weapons.size();u++)
 		{
 			Weapon tempEnemy = weapons.get(u);
@@ -306,6 +309,19 @@ public class Controller
 				(enemyWeapons.get(i)).scan(tempEnemy);
 			}
 		}
+		
+        for(int u = 0;u<enemies.size();u++)
+        {
+            Unit tempEnemy = enemies.get(u);
+            for(int i = 0;i<activeUnits.size();i++)
+            {
+                if(activeUnits.get(i).ID == 'K')
+                {
+                    ((Kamiko)activeUnits.get(i)).scan(tempEnemy);
+                    ((Kamiko)activeUnits.get(i)).updateEnemies(enemies);
+                }
+            }
+        }
 	}
 
 	public void checkUnits()
