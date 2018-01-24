@@ -240,33 +240,33 @@ public class TowerMenu
 			{
 				if(subclass=='S')
 				{
-					g.drawImage(ScoutFactory.getImage(),x,y,42,42,null);
+					g.drawImage(ScoutFactory.getImage(true),x,y,42,42,null);
 				}
 				if(subclass=='T')
 				{
-					g.drawImage(TankFactory.getImage(),x,y,42,42,null);
+					g.drawImage(TankFactory.getImage(true),x,y,42,42,null);
 				}
 				if(subclass=='K')
 				{
-					g.drawImage(KamikoFactory.getImage(),x,y,42,42,null);
+					g.drawImage(KamikoFactory.getImage(true),x,y,42,42,null);
 				}
 			}
 			if(towerType=='W')
 			{
 				if(subclass=='T')
 				{
-					g.drawImage(Turret.getImage(),x,y,42,42,null);
+					g.drawImage(Turret.getImage(true),x,y,42,42,null);
 				}
 				if(subclass=='C')
 				{
-					g.drawImage(Canon.getImage(),x,y,42,42,null);
+					g.drawImage(Canon.getImage(true),x,y,42,42,null);
 				}
 			}
 			if(towerType=='N')
 			{
 				if(subclass=='N')
 				{
-					g.drawImage(Turret.getImage(),x,y,42,42,null);
+					g.drawImage(Turret.getImage(true),x,y,42,42,null);
 				}
 			}
 			//g.drawImage(myTower.getImage(),x,y,42,42,null);//}catch(NullPointerException e){}

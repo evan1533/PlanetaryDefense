@@ -39,18 +39,18 @@ public class Turret extends Weapon
 
 	}
 
-	public static BufferedImage getImage()
+	public static BufferedImage getImage(boolean isFriend)
 	{
 		myImage = new BufferedImage(42,42,BufferedImage.TYPE_INT_ARGB);
 		Graphics img = myImage.getGraphics();
-	//	if(FRIENDLY)
-	//	{
+		if(isFriend)
+		{
 			img.setColor(Color.blue);
-	//	}
-	//	else
-	//	{
-	//		img.setColor(Color.red);
-		//}
+		}
+		else
+		{
+			img.setColor(Color.red);
+		}
 
 		img.fillRect(0,0,42,42);
 		img.setColor(Color.black);

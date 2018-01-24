@@ -543,6 +543,13 @@ public class GameMap
 
 	public void writeMapFile(String fileName, boolean append)
 	{
+	    /* Order to write:
+	     * ---------------
+	     * Rocks
+	     * MyBase
+	     * EnemyBase
+	     * EnemyTowers
+	     */
 		try{
 		BufferedWriter pw = new BufferedWriter(new FileWriter(fileName+".txt",append));
 		for(int i = 0; i<this.height;i++)
@@ -614,10 +621,7 @@ public class GameMap
 							//System.out.println("REAL WOMEN "+tempI+" "+tempJ);
 							if(line[1].charAt(0)=='F')
 							{
-								if(line[2].charAt(0)=='S')
-								{
-									this.setEnemyTower(tempI,tempJ,line[1].charAt(0),line[2].charAt(0));
-								}
+								this.setEnemyTower(tempI,tempJ,line[1].charAt(0),line[2].charAt(0));
 							}
 							if(line[1].charAt(0)=='W')
 							{
@@ -634,10 +638,7 @@ public class GameMap
 						int tempJ = Integer.parseInt(cord[1]);
 						if(line[1].charAt(0)=='F')
 						{
-							if(line[2].charAt(0)=='S')
-							{
-								this.setTower(tempI,tempJ,line[1].charAt(0),line[2].charAt(0));
-							}
+							this.setTower(tempI,tempJ,line[1].charAt(0),line[2].charAt(0));
 						}
 					}
 					//System.out.println(str);

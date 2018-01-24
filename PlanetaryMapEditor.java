@@ -17,6 +17,7 @@ implements MouseListener, Runnable
 	JTextField txt = new JTextField("Welcome to Java");
 	int bw = 42;
 	int placeType = 1;
+	private EditMenuItem[] menuItems = new EditMenuItem[10]; 
 
 	public PlanetaryMapEditor()
 	{
@@ -138,5 +139,29 @@ implements MouseListener, Runnable
 	public static void main(String[] args)
 	{
 		(new PlanetaryMapEditor()).init();
+	}
+	
+	class EditMenuItem
+	{
+	    private int x, y;
+	    private Tower referenceTower;
+	    private BufferedImage menuImage;
+	    private boolean friend;
+	    
+	    public EditMenuItem(int x, int y, Tower t,boolean isFriend)
+	    {
+	        this.x = x;
+	        this.y = y;
+	        this.referenceTower = t;
+	        this.friend = isFriend;
+	        this.menuImage = t.getImage(isFriend);
+	    }
+	    
+	    public void render(Graphics g)
+	    {
+	        g.drawImage(menuImage, this.x,this.y,menuImage.getWidth(),menuImage.getHeight(),null);
+	    }
+	    
+	    
 	}
 }

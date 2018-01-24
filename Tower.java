@@ -40,4 +40,9 @@ public abstract class Tower extends MapObject
 		HP-=dmg;
 		//System.out.println(HP);
 	}
+	
+	public static BufferedImage getImage(boolean isFriendly)
+	{
+	    return myImage;
+	}
 }
