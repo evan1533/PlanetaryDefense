@@ -7,7 +7,7 @@ import java.io.*;
 import java.awt.image.*;
 
 public class PlanetaryMapEditor
-extends Applet
+extends PlanetaryDefense
 implements MouseListener, Runnable
 {
 	CustomWindow window;
@@ -17,16 +17,25 @@ implements MouseListener, Runnable
 	JTextField txt = new JTextField("Welcome to Java");
 	int bw = 42;
 	int placeType = 1;
-	private EditMenuItem[] menuItems = new EditMenuItem[10]; 
+	private EditMenuItem[] menuItems = new EditMenuItem[6];
+	private String writeID = "RR";
 
 	public PlanetaryMapEditor()
 	{
-		//c = new Controller(this);
-		map = new GameMap();
+		super("LevelOne.txt");
+		c = new Controller(this);
+		map = new GameMap(this);
 	}
 
 	public void init()
 	{
+		menuItems[0] = new EditMenuItem('F','S',false);
+		menuItems[1] = new EditMenuItem('F','T',false);
+		menuItems[2] = new EditMenuItem('F','K',false);
+		menuItems[3] = new EditMenuItem('W','T',false);
+		menuItems[4] = new EditMenuItem('W','C',false);
+		menuItems[5] = new EditMenuItem('R','R',false);
+		
 		setSize(750,1000);
 		addMouseListener(this);
 		window = new CustomWindow(750,1000,this);
@@ -37,6 +46,8 @@ implements MouseListener, Runnable
 		th = new Thread(this);
 		th.start();
 		loadLevel("LevelOne.txt");
+		
+
 	}
 
 	public void update(Graphics g) {
@@ -69,6 +80,11 @@ implements MouseListener, Runnable
 				g.drawRect(281+(j*bw),11+(i*bw),bw,bw);
 			}
 		}
+		
+		for(int i = 0;i<menuItems.length;i++)
+		{
+			menuItems[i].render(g,80+70*(i%2),80+70*(i/2));
+		}
 	}
 
 	public void loadLevel(String levelFile)
@@ -84,10 +100,6 @@ implements MouseListener, Runnable
 					{
 						map.loadMapFile(line[1]);
 					}
-					else if(line[0].equals("Setup"))
-					{
-						c.coordinateTroops(line[1]);
-					}
 				}
 			br.close();
 		}catch(IOException e){}
@@ -99,7 +111,6 @@ implements MouseListener, Runnable
 		while(true)
 		{
 			repaint();
-
 		}
 	}
 
@@ -110,9 +121,28 @@ implements MouseListener, Runnable
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 
-		//System.out.println(e.getPoint());
+		System.out.println(e.getPoint());
 		//System.out.println(GameMap.iFromY(mouseY)+" "+GameMap.jFromX(mouseX)+"\n\n");
-		map.setRock(e.getX(),e.getY());
+		if(e.getX()>280&&e.getY()>11)
+		{
+			if(SwingUtilities.isLeftMouseButton(e))
+			{
+				if(writeID.charAt(0)=='R')
+					map.setRock(e.getX(),e.getY());
+				else
+					map.setEnemyTower(map.iFromY(e.getY()),map.jFromX(e.getX()), writeID.charAt(0), writeID.charAt(1));
+			}
+			else if(SwingUtilities.isRightMouseButton(e))
+			{
+				map.removeObject(e.getX(),e.getY());
+			}
+		}
+		
+		for(int i = 0;i<menuItems.length;i++)
+		{
+			if(menuItems[i].checkClick(e.getX(),e.getY()))
+				writeID = menuItems[i].getWriteID();
+		}
 		repaint();
 		if(mouseX>80&&mouseX<180&&mouseY>400&&mouseY<440)
 		{
@@ -144,17 +174,19 @@ implements MouseListener, Runnable
 	class EditMenuItem
 	{
 	    private int x, y;
-	    private Tower referenceTower;
 	    private BufferedImage menuImage;
 	    private boolean friend;
+	    char towerType, subclass;
 	    
-	    public EditMenuItem(int x, int y, Tower t,boolean isFriend)
+	    public EditMenuItem(char towerType, char subclass, boolean isFriend)
 	    {
-	        this.x = x;
-	        this.y = y;
-	        this.referenceTower = t;
 	        this.friend = isFriend;
-	        this.menuImage = t.getImage(isFriend);
+	        if(towerType == 'R')
+	        	this.menuImage = Rock.getImage();
+	        else
+	        	this.menuImage = Tower.getImage(towerType,subclass,isFriend);
+	        this.towerType = towerType;
+	        this.subclass = subclass;
 	    }
 	    
 	    public void render(Graphics g)
@@ -162,6 +194,26 @@ implements MouseListener, Runnable
 	        g.drawImage(menuImage, this.x,this.y,menuImage.getWidth(),menuImage.getHeight(),null);
 	    }
 	    
+	    public void render(Graphics g, int px, int py)
+	    {
+	    	this.x = px;
+	    	this.y = py;
+	        g.drawImage(menuImage, px, py,menuImage.getWidth(),menuImage.getHeight(),null);
+	    }
 	    
+	    public String getWriteID()
+	    {
+	    	return towerType+""+subclass;
+	    }
+	    
+		public boolean checkClick(int mx, int my)
+		{
+			if(mx>x&&mx<x+menuImage.getWidth()&&my>y&&my<y+menuImage.getHeight())
+			{
+				return true;
+			}
+
+			return false;
+		}
 	}
 }

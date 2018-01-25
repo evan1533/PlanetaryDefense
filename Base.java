@@ -5,11 +5,13 @@ public class Base extends MapObject
 	Image baseImage;
 	Color baseColor;
 	int HP = 100;
+	boolean friendly;
 
-	public Base(int px, int py, int pi, int pj, Color col)
+	public Base(int px, int py, int pi, int pj, Color col, boolean friendly)
 	{
 		super(2, px, py, pi, pj);
 		baseColor = col;
+		this.friendly = friendly;
 	}
 
 	public void render(Graphics g)

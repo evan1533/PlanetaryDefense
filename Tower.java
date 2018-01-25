@@ -45,4 +45,35 @@ public abstract class Tower extends MapObject
 	{
 	    return myImage;
 	}
+	
+	public static BufferedImage getImage(char towType, char sub, boolean isFriendly)
+	{
+		if(towType=='F')
+		{
+			if(sub=='S')
+			{
+				return ScoutFactory.getImage(isFriendly);
+			}
+			if(sub=='T')
+			{
+				return TankFactory.getImage(isFriendly);
+			}
+			if(sub=='K')
+			{
+				return KamikoFactory.getImage(isFriendly);
+			}
+		}
+		if(towType=='W')
+		{
+			if(sub=='T')
+			{
+				return Turret.getImage(isFriendly);
+			}
+			if(sub=='C')
+			{
+				return Canon.getImage(isFriendly);
+			}
+		}
+	    return myImage;
+	}
 }

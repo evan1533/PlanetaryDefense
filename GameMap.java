@@ -12,6 +12,7 @@ public class GameMap
 	ArrayList<String> friendlyPathArray = new ArrayList<>();
 	Color userCol;
 	PlanetaryDefense myGame;
+	PlanetaryMapEditor myEdit;
 	int source = -1, end = -1;
 	static final int width = 16;
 	static final int height = 16;
@@ -34,7 +35,7 @@ public class GameMap
 				map[i][j] = new Tile(281+(j*14),11+(i*14),i,j);
 			}
 		}
-		myGame = gam;
+		this.myGame = gam;
 	}
 
 	public GameMap()
@@ -314,13 +315,13 @@ public class GameMap
 		if(friend)
 		{
 			c = new Color(0,0,255);
-			playerBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c);
+			playerBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c,true);
 			temp = playerBase;
 		}
 		else
 		{
 			c = new Color(255,0,0);
-			badBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c);
+			badBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c,true);
 			temp = badBase;
 		}
 
@@ -344,7 +345,20 @@ public class GameMap
 				temp = new ScoutFactory(281+(pj*bw),11+(pi*bw), pi, pj, false, nodeGraph, enemyBase, myBase);
 				//addEnemyFactory(tempFactory);
 				map[pi][pj] = temp;
-
+			}
+			if(typ2 == 'T')
+			{
+				//System.out.println("ASDF");
+				temp = new TankFactory(281+(pj*bw),11+(pi*bw), pi, pj, false, nodeGraph, enemyBase, myBase);
+				//addEnemyFactory(tempFactory);
+				map[pi][pj] = temp;
+			}
+			if(typ2 == 'K')
+			{
+				//System.out.println("ASDF");
+				temp = new KamikoFactory(281+(pj*bw),11+(pi*bw), pi, pj, false, nodeGraph, enemyBase, myBase);
+				//addEnemyFactory(tempFactory);
+				map[pi][pj] = temp;
 			}
 		}
 		if(typ1 == 'W')
@@ -522,25 +536,6 @@ public class GameMap
 		return friendlyPathArray;
 	}
 
-	public void writeMapFile(String fileName)
-	{
-		try{
-		BufferedWriter pw = new BufferedWriter(new FileWriter(fileName+".txt",true));
-		for(int i = 0; i<height;i++)
-		{
-			for(int j = 0;j<this.width;j++)
-			{
-				if(this.getObject(i,j).TYPE == 1)
-				{
-					pw.append(i+","+j);
-					pw.newLine();
-					pw.flush();
-				}
-			}
-		}
-		}catch(IOException e){}
-	}
-
 	public void writeMapFile(String fileName, boolean append)
 	{
 	    /* Order to write:
@@ -550,17 +545,105 @@ public class GameMap
 	     * EnemyBase
 	     * EnemyTowers
 	     */
+		String[] headers = {"Rocks","MyBase","EnemyBase","EnemyTower"};
 		try{
 		BufferedWriter pw = new BufferedWriter(new FileWriter(fileName+".txt",append));
-		for(int i = 0; i<this.height;i++)
+		for(int q = 0;q<headers.length;q++)
 		{
-			for(int j = 0;j<this.width;j++)
+			pw.newLine();
+			pw.append(headers[q]);
+			pw.newLine();
+			pw.flush();
+			for(int i = 0; i<this.height;i++)
 			{
-				if(this.getObject(i,j).TYPE == 1)
+				for(int j = 0;j<this.width;j++)
 				{
-					pw.append(i+","+j);
-					pw.newLine();
-					pw.flush();
+					MapObject tempObj = this.getObject(i, j);
+					
+					if(tempObj.TYPE == 1 && q == 0)
+					{
+						pw.append(i+","+j);
+						pw.newLine();
+						pw.flush();
+					}
+					else if(tempObj.TYPE == 2 && (q==1 || q==2))
+					{
+						if( ((Base)tempObj).friendly && q==1)
+						{
+							pw.append(i+","+j);
+							pw.newLine();
+							pw.flush();
+						}
+						else if( ((Base)tempObj).friendly && q==2)
+						{
+							pw.append(i+","+j);
+							pw.newLine();
+							pw.flush();
+						}
+					}
+					else if(tempObj.TYPE == 3 && q==3)
+					{
+						pw.append(i+","+j+" "+((Tower)tempObj).TOWER_TYPE+" "+((Tower)tempObj).SUBCLASS);
+						pw.newLine();
+						pw.flush();
+					}
+				}
+			}
+		}
+		}catch(IOException e){}
+	}
+
+	public void writeMapFile(String fileName)
+	{
+	    /* Order to write:
+	     * ---------------
+	     * Rocks
+	     * MyBase
+	     * EnemyBase
+	     * EnemyTowers
+	     */
+		String[] headers = {"Rocks","MyBase","EnemyBase","EnemyTower"};
+		try{
+		BufferedWriter pw = new BufferedWriter(new FileWriter(fileName+".txt",true));
+		for(int q = 0;q<headers.length;q++)
+		{
+			pw.newLine();
+			pw.append(headers[q]);
+			pw.newLine();
+			pw.flush();
+			for(int i = 0; i<this.height;i++)
+			{
+				for(int j = 0;j<this.width;j++)
+				{
+					MapObject tempObj = this.getObject(i, j);
+					
+					if(tempObj.TYPE == 1 && q == 0)
+					{
+						pw.append(i+","+j);
+						pw.newLine();
+						pw.flush();
+					}
+					else if(tempObj.TYPE == 2 && (q==1 || q==2))
+					{
+						if( ((Base)tempObj).friendly && q==1)
+						{
+							pw.append(i+","+j);
+							pw.newLine();
+							pw.flush();
+						}
+						else if( ((Base)tempObj).friendly && q==2)
+						{
+							pw.append(i+","+j);
+							pw.newLine();
+							pw.flush();
+						}
+					}
+					else if(tempObj.TYPE == 3 && q==3)
+					{
+						pw.append(i+","+j+" "+((Tower)tempObj).TOWER_TYPE+" "+((Tower)tempObj).SUBCLASS);
+						pw.newLine();
+						pw.flush();
+					}
 				}
 			}
 		}
