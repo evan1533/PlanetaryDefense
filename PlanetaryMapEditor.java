@@ -17,7 +17,7 @@ implements MouseListener, Runnable
 	JTextField txt = new JTextField("Welcome to Java");
 	int bw = 42;
 	int placeType = 1;
-	private EditMenuItem[] menuItems = new EditMenuItem[6];
+	private EditMenuItem[] menuItems = new EditMenuItem[8];
 	private String writeID = "RR";
 
 	public PlanetaryMapEditor()
@@ -35,6 +35,8 @@ implements MouseListener, Runnable
 		menuItems[3] = new EditMenuItem('W','T',false);
 		menuItems[4] = new EditMenuItem('W','C',false);
 		menuItems[5] = new EditMenuItem('R','R',false);
+		menuItems[6] = new EditMenuItem('B','F',true);
+		menuItems[7] = new EditMenuItem('B','E',false);
 		
 		setSize(750,1000);
 		addMouseListener(this);
@@ -121,7 +123,7 @@ implements MouseListener, Runnable
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 
-		System.out.println(e.getPoint());
+		//System.out.println(e.getPoint());
 		//System.out.println(GameMap.iFromY(mouseY)+" "+GameMap.jFromX(mouseX)+"\n\n");
 		if(e.getX()>280&&e.getY()>11)
 		{
@@ -129,6 +131,13 @@ implements MouseListener, Runnable
 			{
 				if(writeID.charAt(0)=='R')
 					map.setRock(e.getX(),e.getY());
+				else if(writeID.charAt(0)=='B')
+				{
+				    if(writeID.charAt(1)=='F')
+				        map.setComponentBase(map.iFromY(e.getY()),map.jFromX(e.getX()), true);
+				    else if(writeID.charAt(1)=='E')
+				        map.setComponentBase(map.iFromY(e.getY()),map.jFromX(e.getX()), false);
+				}
 				else
 					map.setEnemyTower(map.iFromY(e.getY()),map.jFromX(e.getX()), writeID.charAt(0), writeID.charAt(1));
 			}
@@ -183,6 +192,10 @@ implements MouseListener, Runnable
 	        this.friend = isFriend;
 	        if(towerType == 'R')
 	        	this.menuImage = Rock.getImage();
+	        else if(towerType == 'B')
+	        {
+	            this.menuImage = Base.getImage(isFriend);
+	        }
 	        else
 	        	this.menuImage = Tower.getImage(towerType,subclass,isFriend);
 	        this.towerType = towerType;

@@ -21,7 +21,8 @@ public class GameMap
 	static final int bw = 42;
 	int myBase;
 	int enemyBase;
-
+	boolean hasPlayerBase = false;
+	boolean hasEnemBase = false;
 	Base playerBase;
 	Base badBase;
 
@@ -112,8 +113,18 @@ public class GameMap
 			return null;
 		int rockJ = jFromX(mx);
 		int rockI = iFromY(my);
-
-		if(map[rockI][rockJ].TYPE != 1)
+		
+		if(map[rockI][rockJ].TYPE == 2)
+		{
+		    if( ((Base)map[rockI][rockJ]).friendly )
+		        hasPlayerBase = false;
+		    else if( !((Base)map[rockI][rockJ]).friendly )
+                hasEnemBase = false;
+            tempRock = new Rock(281+(rockJ*bw),11+(rockI*bw),rockI,rockJ);
+            map[rockI][rockJ] = tempRock;
+            return tempRock;
+		}
+		else if(map[rockI][rockJ].TYPE != 1)
 		{
 			tempRock = new Rock(281+(rockJ*bw),11+(rockI*bw),rockI,rockJ);
 			map[rockI][rockJ] = tempRock;
@@ -150,6 +161,13 @@ public class GameMap
 
 		if(map[rockI][rockJ].TYPE >= 0)
 		{
+	      if(map[rockI][rockJ].TYPE == 2)
+	      {
+	          if( ((Base)map[rockI][rockJ]).friendly )
+	              hasPlayerBase = false;
+	          else if( !((Base)map[rockI][rockJ]).friendly )
+	              hasEnemBase = false;
+	      }
 			map[rockI][rockJ] = new Tile(281+42*rockJ,11+42*rockI,rockI,rockJ);
 		}
 	}
@@ -158,6 +176,7 @@ public class GameMap
 	{
 		int rockJ = jFromX(mx);
 		int rockI = iFromY(my);
+
 		map[rockI][rockJ] = new Tile(281+42*rockJ,11+42*rockI,rockI,rockJ);
 		createNeighbors();
 		findPath();
@@ -312,20 +331,37 @@ public class GameMap
 	{
 		Color c;
 		Base temp;
-		if(friend)
+		System.out.println(hasEnemBase);
+		if(friend&&!hasPlayerBase)
 		{
+	        if(map[pi][pj].TYPE == 2)
+	        {
+	            if( ((Base)map[pi][pj]).friendly )
+	                hasPlayerBase = false;
+	            else if( !((Base)map[pi][pj]).friendly )
+	                hasEnemBase = false;
+	        }
 			c = new Color(0,0,255);
-			playerBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c,true);
+			playerBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c, true);
 			temp = playerBase;
+			hasPlayerBase = true;
+		     map[pi][pj] = temp;
 		}
-		else
+		else if(!friend&&!hasEnemBase)
 		{
+	        if(map[pi][pj].TYPE == 2)
+	        {
+	            if( ((Base)map[pi][pj]).friendly )
+	                hasPlayerBase = false;
+	            else if( !((Base)map[pi][pj]).friendly )
+	                hasEnemBase = false;
+	        }
 			c = new Color(255,0,0);
-			badBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c,true);
+			badBase = new Base(281+(pj*bw),11+(pi*bw), pi, pj, c, false);
 			temp = badBase;
+			hasEnemBase = true;
+		     map[pi][pj] = temp;
 		}
-
-		map[pi][pj] = temp;
 
 	}
 
@@ -337,6 +373,13 @@ public class GameMap
 	public void setEnemyTower(int pi, int pj, char typ1, char typ2)
 	{
 		Tower temp = null;
+        if(map[pi][pj].TYPE == 2)
+        {
+            if( ((Base)map[pi][pj]).friendly )
+                hasPlayerBase = false;
+            else if( !((Base)map[pi][pj]).friendly )
+                hasEnemBase = false;
+        }
 		if(typ1 == 'F')
 		{
 			if(typ2 == 'S')

@@ -372,12 +372,12 @@ public class Controller
 			if(pathArray.size()==0)
 				break;
 			Unit temp = enemies.get(i);
-			//try{
+			try{
 			if(temp.pathComplete)
 			{
 				enemies.remove(temp);
 			}
-			temp.move();//}catch(Exception e){}
+			temp.move();}catch(Exception e){e.printStackTrace();}
 
 			/*if(temp.isDeployed())
 			{

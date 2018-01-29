@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Base extends MapObject
 {
@@ -6,6 +7,7 @@ public class Base extends MapObject
 	Color baseColor;
 	int HP = 100;
 	boolean friendly;
+	static BufferedImage myImage;
 
 	public Base(int px, int py, int pi, int pj, Color col, boolean friendly)
 	{
@@ -29,4 +31,23 @@ public class Base extends MapObject
 	{
 		this.HP -= dmg;
 	}
+	
+    public static BufferedImage getImage(boolean isFriend)
+    {
+        myImage = new BufferedImage(42,42,BufferedImage.TYPE_INT_ARGB);
+        Graphics img = myImage.getGraphics();
+        if(isFriend)
+        {
+            img.setColor(Color.blue);
+        }
+        else
+        {
+            img.setColor(Color.red);
+        }
+
+        img.fillRect(0,0,42,42);
+        img.setColor(Color.green);
+        img.fillRect(11,11,21,21);
+        return myImage;
+    }
 }
