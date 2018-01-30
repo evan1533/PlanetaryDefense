@@ -74,6 +74,13 @@ public abstract class Tower extends MapObject
 				return Canon.getImage(isFriendly);
 			}
 		}
+		if(towType=='A')
+		{
+			if(sub=='T')
+			{
+				return Tokamok.getImage(isFriendly);
+			}
+		}
 	    return myImage;
 	}
 }

@@ -25,6 +25,7 @@ public abstract class Unit
 	int baseDamage;
 	int height;
 	char ID;
+	private double storedSpeed = 0;
 
 	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int dmg, char id)
 	{
@@ -33,6 +34,7 @@ public abstract class Unit
 		x = px;
 		y = py;
 		speed = pSpeed;
+		storedSpeed = speed;
 		this.nodeGraph = nodGraf;
 		this.end = pEnd;
 		bfs = new BFS();
@@ -139,14 +141,17 @@ public abstract class Unit
 			String[] nextPoint = (this.myPath.get(this.pointIndex)).split("[ ]");
 			String[] prevPoint = this.curPathPoint.split("[ ]");
 
+			
 			int nextX = (GameMap.mapX+GameMap.bw*(Integer.parseInt(nextPoint[1])))+offsetX;
 			int nextY = (GameMap.mapY+GameMap.bw*(Integer.parseInt(nextPoint[0])))+offsetY;
+
 			////System.out.println(this.x+" "+nextX+","+this.y+" "+nextY);
 
-			if(this.x==nextX&&this.y==nextY)
+			if(this.x>=nextX-2&&this.x<=nextX+2&&this.y>=nextY-2&&this.y<=nextY+2)
 			{
 				if(this.pointIndex+1<myPath.size())
 					this.setPathPoint(myPath.get(this.pointIndex+1),this.pointIndex+1);
+
 			}
 
 			if(this.x>nextX)
@@ -225,6 +230,22 @@ public abstract class Unit
 	public boolean checkAlive()
 	{
 		return alive;
+	}
+	
+	public void reduceSpeed()
+	{
+		storedSpeed = speed;
+		speed = speed/2;
+	}
+	
+	public void restoreSpeed()
+	{
+		speed = storedSpeed;
+	}
+	
+	public boolean checkSpeed()
+	{
+		return speed == storedSpeed;
 	}
 
 }

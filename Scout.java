@@ -14,14 +14,14 @@ extends Unit
 	public void tickX(int dir)
 	{
 		//this.dx = pDx;
-		this.x += (int)(this.speed*dir);
+		this.x += this.speed*dir;
 
 	}
 
 	public void tickY(int dir)
 	{
 		//this.dy = pDy;
-		this.y += (int)(this.speed*dir);
+		this.y += this.speed*dir;
 	}
 
 	public int getValue()

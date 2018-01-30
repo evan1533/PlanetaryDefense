@@ -29,7 +29,7 @@ public class TowerMenu
 
 			buildTiles[3] = new MenuTile(-52,25, 'F', 'T');
 			buildTiles[4] = new MenuTile(0,+52, 'F', 'K');
-			buildTiles[5] = new MenuTile(52,25, 'F', 'S');
+			buildTiles[5] = new MenuTile(52,25, 'A', 'T');
 
 			editTiles[0] = new MenuTile(52,-22, 'N', 'N');
 			editTiles[1] = new MenuTile(-52, -22, 'N', 'N');
@@ -260,6 +260,14 @@ public class TowerMenu
 				if(subclass=='C')
 				{
 					g.drawImage(Canon.getImage(true),x,y,42,42,null);
+				}
+
+			}
+			if(towerType=='A')
+			{
+				if(subclass=='T')
+				{
+					g.drawImage(Tokamok.getImage(true),x,y,42,42,null);
 				}
 			}
 			if(towerType=='N')

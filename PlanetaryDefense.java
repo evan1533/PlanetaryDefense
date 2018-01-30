@@ -335,6 +335,17 @@ implements MouseListener, Runnable, MouseMotionListener
 									}
 								}
 							}
+							if(deets[0].charAt(0)=='A')
+							{
+								if(deets[1].charAt(0)=='T')
+								{
+									Tokamok tok = new Tokamok(1,tx,ty,GameMap.iFromY(ty),GameMap.jFromX(tx),true, this);
+									if(market.canBuy(tok))
+									{
+										buildTower(tok,tx,ty,onPath, onMyPath);
+									}
+								}
+							}
 						}
 					}
 					else if(towerDetails.substring(0,4).equals("sell"))

@@ -15,12 +15,14 @@ public class Controller
 	ArrayList<Weapon> enemyWeapons = new ArrayList<>();
 	ArrayList<Unit> enemies = new ArrayList<>();
 	ArrayList<Wave> waves = new ArrayList<>();
+	ArrayList<AOETower> enemy_aoe = new ArrayList<>();
 
 
 	ArrayList<Factory> factories = new ArrayList<>();
 	ArrayList<Unit> myUnits = new ArrayList<>();
 	ArrayList<Unit> activeUnits = new ArrayList<>();
 	ArrayList<Weapon> weapons = new ArrayList<>();
+	ArrayList<AOETower> aoe_tows = new ArrayList<>();
 
 	int bw = 42;
 	int offsetX = 281;
@@ -115,6 +117,12 @@ public class Controller
 			enemyWeapons.add(tempWeapon);
 			//System.out.println("TURRET TIME");
 		}
+		if(typ1 == 'A')
+		{
+			AOETower tempAOE = (AOETower)(t);
+			enemy_aoe.add(tempAOE);
+			//System.out.println("TURRET TIME");
+		}
 	}
 
 	public void removeTower(Tower t)
@@ -136,6 +144,12 @@ public class Controller
 			weapons.remove(tempTurret);
 			//System.out.println("ASSHAT");
 		}
+		if(typ1 == 'A')
+		{
+			AOETower tempAOE = (AOETower)(t);
+			enemy_aoe.remove(tempAOE);
+			//System.out.println("TURRET TIME");
+		}
 	}
 
 	public void addTower(Tower t)
@@ -154,12 +168,17 @@ public class Controller
 		{
 			weapons.add((Weapon)t);
 		}
+		if(typ1 == 'A')
+		{
+			aoe_tows.add((AOETower)t);
+		}
 	}
 
 	public ArrayList<Factory> getFactories()
 	{
 		return enemyFactories;
 	}
+	
 	public boolean hasEnemy(int mx, int my)
 	{
 		for(int i = 0;i<enemies.size();i++)
@@ -235,7 +254,14 @@ public class Controller
 				int y = 11+(enemBase/16)*42;
 
 				//neeed a way to add all types of enemies, not just scout
-				enemies.add(new Scout(1,x,y,node,myBase,false));
+				if(tempWave.TYPE=='S')
+				{
+					enemies.add(new Scout(1,x,y,node,myBase,false));
+				}
+				else if(tempWave.TYPE=='T')
+				{
+					enemies.add(new Tank(1,x,y,node,myBase,false));
+				}
 				tempWave.lastDeployment = count;
 				tempWave.SIZE-=1;
 			}
@@ -288,6 +314,11 @@ public class Controller
 				(weapons.get(i)).scan(tempEnemy);
 				(weapons.get(i)).updateEnemies(enemies);
 			}
+			for(int i = 0;i<aoe_tows.size();i++)
+			{
+				(aoe_tows.get(i)).scan(tempEnemy);
+				(aoe_tows.get(i)).updateEnemies(enemies);
+			}
 		}
 		
 		//Enemy tower targeting friendly units
@@ -298,9 +329,13 @@ public class Controller
 			{
 				(enemyWeapons.get(i)).scan(tempEnemy);
 			}
+			for(int i = 0;i<enemy_aoe.size();i++)
+			{
+				(enemy_aoe.get(i)).scan(tempEnemy);
+			}
 		}
 		
-		
+		//Enemy Towers targeting friendly towers positioned too close/in range
 		for(int u = 0;u<weapons.size();u++)
 		{
 			Weapon tempEnemy = weapons.get(u);
@@ -310,6 +345,7 @@ public class Controller
 			}
 		}
 		
+		//Friendly kamikazee units scanning how many enemies are close by
         for(int u = 0;u<enemies.size();u++)
         {
             Unit tempEnemy = enemies.get(u);
