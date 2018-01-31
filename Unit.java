@@ -26,6 +26,8 @@ public abstract class Unit
 	int height;
 	char ID;
 	private double storedSpeed = 0;
+	private boolean searchX = false;
+	private boolean searchY = false;
 
 	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int dmg, char id)
 	{
@@ -153,23 +155,30 @@ public abstract class Unit
 					this.setPathPoint(myPath.get(this.pointIndex+1),this.pointIndex+1);
 
 			}
-
-			if(this.x>nextX)
+			
+			searchX = !(this.x>=nextX-2&&this.x<=nextX+2);
+            searchY = !(this.y>=nextY-2&&this.y<=nextY+2);
+            
+			if(this.x>nextX&&searchX)
 			{
 				this.tickX(-1);
+				this.faceDir('W');
 			}
-			else if(this.x<nextX)
+			else if(this.x<nextX&&searchX)
 			{
 				this.tickX(1);
+				this.faceDir('E');
 			}
 
-			if(this.y>nextY)
+			if(this.y>nextY&&searchY)
 			{
 				this.tickY(-1);
+				this.faceDir('S');
 			}
-			else if(this.y<nextY)
+			else if(this.y<nextY&&searchY)
 			{
 				this.tickY(1);
+				this.faceDir('N');
 			}
 		}
 		if(this.curPathPoint.equals(this.myPath.get(myPath.size()-1)))
@@ -247,5 +256,7 @@ public abstract class Unit
 	{
 		return speed == storedSpeed;
 	}
+	
+	public abstract void faceDir(char D);
 
 }
