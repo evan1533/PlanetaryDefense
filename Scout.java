@@ -1,5 +1,6 @@
 import java.util.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Scout
 extends Unit
@@ -29,21 +30,20 @@ extends Unit
 		return 20;
 	}
 
-
-
-	public void render(Graphics g)
-	{
-		Color c = g.getColor();
-		if(!FRIENDLY)
-			g.setColor(Color.RED);
-		else
-			g.setColor(Color.blue);
-		g.fillRect((int)x,(int)y,21,21);
-		g.setColor(c);
-	}
+    public void createUnitImage()
+    {
+        unitImage = new BufferedImage(this.width,this.height,BufferedImage.TYPE_INT_ARGB);
+        Graphics img = unitImage.getGraphics();
+        if(!FRIENDLY)
+            img.setColor(Color.RED);
+        else
+            img.setColor(Color.blue);
+        img.fillRect(0,0,21,21);
+    }
 
 	public void upgradeUnit()
 	{
 
 	}
+
 }

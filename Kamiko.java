@@ -1,5 +1,6 @@
 import java.util.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Kamiko
 extends Unit
@@ -115,19 +116,29 @@ extends Unit
         }
 
     }
-
+    
+    public void createUnitImage()
+    {
+        unitImage = new BufferedImage(this.width,this.height,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D img = (Graphics2D)unitImage.getGraphics();
+        if(!FRIENDLY)
+            img.setColor(Color.RED);
+        else
+            img.setColor(Color.blue);
+        img.fillRect(0,0,width,height);
+        img.setColor(new Color(80,80,80));
+        img.fillRect(10, 0,5,height);
+    }
+    
+    @Override
     public void render(Graphics g)
     {
         if(!exploding)
         {
             Color c = g.getColor();
-            if(!FRIENDLY)
-                g.setColor(Color.RED);
-            else
-                g.setColor(Color.blue);
-            g.fillRect((int)x,(int)y,width,height);
-            g.setColor(c);
-            g.fillRect((int)x+10,(int)y,5,height);
+            Graphics2D g2d = (Graphics2D)g;
+            BufferedImage filteredImage = this.getRotationFilter().filter(unitImage, null);
+            g2d.drawImage(filteredImage, (int)x, (int)y,filteredImage.getWidth(),filteredImage.getHeight(), null);
         }
         else
         {

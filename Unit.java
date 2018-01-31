@@ -1,5 +1,8 @@
 import java.util.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 
 public abstract class Unit
 {
@@ -28,6 +31,13 @@ public abstract class Unit
 	private double storedSpeed = 0;
 	private boolean searchX = false;
 	private boolean searchY = false;
+	double theta = 0;
+	double rotationRequired = Math.toRadians (theta);
+	double locationX;
+	double locationY;
+	AffineTransformOp op;
+	AffineTransform tx;
+	BufferedImage unitImage;
 
 	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int dmg, char id)
 	{
@@ -51,6 +61,11 @@ public abstract class Unit
 		offsetY = (int)(Math.random()*height);
 		baseDamage = dmg;
 		this.ID = id;
+		this.createUnitImage();
+		locationY = height/ 2;
+		locationX = width / 2;
+		tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+		op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	}
 
 	public Unit(int pLevel, int pHP, double pArmor, int px, int py, double pSpeed, int[][] nodGraf, int pEnd, boolean pfriendly, int width, int height, int dmg,char id)
@@ -74,6 +89,11 @@ public abstract class Unit
 		this.height = height;
 		baseDamage = dmg;
 		this.ID = id;
+		this.createUnitImage();
+		locationY = height/ 2;
+		locationX = width / 2;
+        tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+        op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
 	}
 
 	public int getBaseDmg()
@@ -85,7 +105,11 @@ public abstract class Unit
 	//{
 		//this.myPath = path;
 //	}
-
+	
+	public BufferedImage getUnitImage()
+	{
+	    return this.unitImage;
+	}
 	abstract public void upgradeUnit();
 
 	public void findPath()
@@ -120,8 +144,14 @@ public abstract class Unit
 	}
 	abstract public void tickX(int dx);
 	abstract public void tickY(int dy);
-	abstract public void render(Graphics g);
 	abstract public int getValue();
+	
+    public void render(Graphics g)
+    {
+        Graphics2D g2d = (Graphics2D)g;
+        BufferedImage filteredImage = this.getRotationFilter().filter(unitImage, null);
+        g2d.drawImage(filteredImage, (int)x, (int)y,filteredImage.getWidth(),filteredImage.getHeight(), null);
+    }
 
 	public void setPathPoint(String pathpoint, int ind)
 	{
@@ -248,7 +278,7 @@ public abstract class Unit
 	}
 	
 	public void restoreSpeed()
-	{
+	{      
 		speed = storedSpeed;
 	}
 	
@@ -257,6 +287,28 @@ public abstract class Unit
 		return speed == storedSpeed;
 	}
 	
-	public abstract void faceDir(char D);
-
+	public void faceDir(char D)
+	{
+	    switch(D)
+	    {
+	        case 'N': theta = 0;
+	            break;
+	        case 'E': theta = 90;
+	            break;
+	        case 'S': theta = 180;
+	            break;
+	        case 'W': theta = 270;
+	            break;
+	    }
+	    rotationRequired = Math.toRadians (theta);
+	    tx = AffineTransform.getRotateInstance(rotationRequired, locationX, locationY);
+	    op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+	}
+	
+	public AffineTransformOp getRotationFilter()
+	{
+	    return this.op;
+	}
+	
+	public abstract void createUnitImage();
 }

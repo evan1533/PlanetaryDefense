@@ -1,5 +1,6 @@
 import java.util.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 public class Tank
 extends Unit
@@ -24,20 +25,20 @@ extends Unit
 	{
 		return 20;
 	}
-
-
-
-	public void render(Graphics g)
+	
+	public void createUnitImage()
 	{
-		Color c = g.getColor();
-		if(!FRIENDLY)
-			g.setColor(Color.RED);
-		else
-			g.setColor(Color.blue);
-		g.fillRect((int)x,(int)y,width,height);
-		g.setColor(c);
-		g.fillRect((int)x+10,(int)y,5,height);
+        unitImage = new BufferedImage(this.width,this.height,BufferedImage.TYPE_INT_ARGB);
+        Graphics2D img = (Graphics2D)unitImage.getGraphics();
+        if(!FRIENDLY)
+            img.setColor(Color.RED);
+        else
+            img.setColor(Color.blue);
+        img.fillRect(0,0,width,height);
+        img.setColor(new Color(80,80,80));
+        img.fillRect(10, 0,5,height);
 	}
+
 
 	public void upgradeUnit()
 	{

@@ -258,6 +258,10 @@ public class Controller
 				{
 					enemies.add(new Scout(1,x,y,node,myBase,false));
 				}
+                else if(tempWave.TYPE=='K')
+                {
+                    enemies.add(new Kamiko(1,x,y,node,myBase,false));
+                }
 				else if(tempWave.TYPE=='T')
 				{
 					enemies.add(new Tank(1,x,y,node,myBase,false));
