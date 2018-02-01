@@ -271,10 +271,10 @@ public abstract class Unit
 		return alive;
 	}
 	
-	public void reduceSpeed()
+	public void reduceSpeed(int spdFactor)
 	{
 		storedSpeed = speed;
-		speed = speed/2;
+		speed = speed*(spdFactor*0.75);
 	}
 	
 	public void restoreSpeed()

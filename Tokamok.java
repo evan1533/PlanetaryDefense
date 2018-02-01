@@ -111,7 +111,7 @@ public class Tokamok extends AOETower
 		for(int i = 0;i<targets.size();i++)
 		{
 			if(targets.get(i).checkSpeed())
-				targets.get(i).reduceSpeed();
+				targets.get(i).reduceSpeed(1);
 		}
 		
 	}
@@ -132,7 +132,7 @@ public class Tokamok extends AOETower
 	{
 		// TODO Auto-generated method stub
 		if(u.checkSpeed())
-			u.reduceSpeed();
+			u.reduceSpeed(1);
 	}
 
 	@Override

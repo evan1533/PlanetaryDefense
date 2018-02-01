@@ -1,8 +1,7 @@
 #Format [Enemy Type] (Enemy level) (number of units) (time of deployment)
 
 Wave
-T 1 8 5
-K 1 8 7
+S 1 5 10
 
 Wave
 S 2 15 80
